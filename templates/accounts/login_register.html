@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}
+    {% if page == 'login_page' %}
+        Login
+    {% elif page == 'register_page' %}
+        Register
+    {% else %}
+        Invalid Page Title
+    {% endif %}
+{% endblock  %}
+
+
+{% block content %}
+
+{% include "base/alert.html" %}
+
+    {% if page == 'login_page' %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" id="username" placeholder="Enter Username">
+            <input type="password" name="password" id="password" placeholder="Enter Password">
+            <button type="submit">Login</button>
+        </form>
+
+    {% elif page == 'register_page' %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit">Register</button>
+        </form>
+
+    {% else %}
+    <h1>Error Loading this Page</h1>
+    
+    {% endif %}
+
+
+{% endblock  %}

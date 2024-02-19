@@ -1,0 +1,9 @@
+{% if messages %}
+
+    <div class="alert alert-primary" role="alert">
+            {% for message in messages %}
+                <strong>{{message}}</strong>
+            {% endfor %}
+    </div>
+
+{% endif %}

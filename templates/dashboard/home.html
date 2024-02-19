@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+
+
+{% block titel %}DashBoard{% endblock  %}
+
+
+{% block content %}
+
+    {% include "base/alert.html" %}
+
+    <a href="{% url "logout" %}"> Logout</a>
+
+    <h1>Home Page or DashBoard</h1>
+
+{% endblock  %}
