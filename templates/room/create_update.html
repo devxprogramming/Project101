@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}
+    {% if page == 'create_room' %}
+        Create Room
+    {% elif page == 'update_room' %}
+        Update Room
+    {% else %}
+        Invalid Page
+    {% endif %}
+{% endblock  %}
+
+
+
+
+{% block content %}
+
+    {% if page == 'create_room' %}
+    
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <button type='submit'>Create</button>
+        </form>
+    {% elif page == 'update_room' %}
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit">Update</button>
+        </form>
+
+    {% else %}
+
+        Invalid Page
+    
+    {% endif %}
+
+{% endblock  %}

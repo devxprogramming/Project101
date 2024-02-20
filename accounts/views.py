@@ -44,7 +44,7 @@ def register_view(request):
             gender = form.cleaned_data.get('gender')
             password = form.cleaned_data.get('password1')
 
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=school_id, password=password)
             login(request, user)
 
             messages.success(request, f'Hey {full_name}, your account has been successfully created')
