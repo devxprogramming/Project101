@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}
+    {% if page == 'create_room' %}
+        Create Room
+    {% elif page == 'update_room' %}
+        Update Room
+    {% else %}
+        Invalid Page
+    {% endif %}
+{% endblock  %}
+
+
+
+
+{% block content %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+
+    </form>
+
+{% endblock  %}

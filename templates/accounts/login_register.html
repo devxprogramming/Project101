@@ -19,7 +19,7 @@
     {% if page == 'login_page' %}
         <form action="" method="post">
             {% csrf_token %}
-            <input type="text" name="username" id="username" placeholder="Enter Username">
+            <input type="text" name="school_id" id="school_id" placeholder="Enter School ID">
             <input type="password" name="password" id="password" placeholder="Enter Password">
             <button type="submit">Login</button>
         </form>

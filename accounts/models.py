@@ -22,12 +22,15 @@ LEVEL = (
 )
 
 class User(AbstractUser):
-    school_id = models.CharField(max_length=255, null=True)
+    school_id = models.CharField(max_length=255, unique=True)
     full_name = models.CharField(max_length=200, null=True)
     username = models.CharField(max_length=200, null=True, unique=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
     gender = models.CharField(max_length=200, choices=GENDER)
+    
+    USERNAME_FIELD = 'school_id'
+    REQUIRED_FIELDS = ['username']
 
 
 class Profile(models.Model):

@@ -8,8 +8,20 @@ from django.contrib.auth.forms import AuthenticationForm
 def login_view(request):
     page = 'login_page'
     if request.method == 'POST':
-        username = request.POST.get('username')
+        school_id = request.POST.get('school_id')
         password = request.POST.get('password')
+        try:
+            user = User.objects.get(school_id=school_id)
+            user = authenticate(username=school_id, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Invalid username or password')
+                return redirect('login')
+        except:
+            messages.error(request, 'Invalid username or password')
+            return redirect('login')
         
             
     context = {
