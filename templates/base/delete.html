@@ -1,0 +1,9 @@
+{% if obj %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{obj}}"?</p>
+        <button type="submit">Delete</button>
+    </form>
+
+{% endif %}

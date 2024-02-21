@@ -12,3 +12,6 @@ class Room(models.Model):
     participants = models.ManyToManyField(User, related_name='participants')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.course_title[:20]

@@ -21,6 +21,11 @@ LEVEL = (
     ('4000', '400'),
 )
 
+ACCOUNT_TYPE = (
+    ("Student", "Student"),
+    ("Lecturer","Lecturer")
+)
+
 class User(AbstractUser):
     school_id = models.CharField(max_length=255, unique=True)
     full_name = models.CharField(max_length=200, null=True)
@@ -28,6 +33,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
     gender = models.CharField(max_length=200, choices=GENDER)
+    account_type = models.CharField(max_length=255, choices=ACCOUNT_TYPE, null=True)
     
     USERNAME_FIELD = 'school_id'
     REQUIRED_FIELDS = ['username']
@@ -35,6 +41,7 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     pid = models.URLField(default=uuid4, unique=True, editable=False)
+    account_type = models.CharField(max_length=255,choices=ACCOUNT_TYPE, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school_id = models.CharField(max_length=255, null=True)
     full_name = models.CharField(max_length=200, null=True)
