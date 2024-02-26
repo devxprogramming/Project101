@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 def avatar_path(instance, filename):
     ext = filename.split('.')[-1]
-    filename = f'{instance.user.id}.{ext}'
+    filename = f'{instance.school_id}.{ext}'
     return f'avatars/{filename}'
 
 GENDER = (
@@ -48,7 +48,8 @@ class Profile(models.Model):
     gender = models.CharField(max_length=200, choices=GENDER)
     level = models.CharField(max_length=200, choices=LEVEL)
     password = models.CharField(max_length=255, null=True)
-    avatar = models.FileField(upload_to=avatar_path, default='default.jpg', null=True, blank=True)
+    avatar = models.FileField(upload_to=avatar_path, default='default.png', null=True, blank=True)
+    
 
     
 

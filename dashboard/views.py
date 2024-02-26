@@ -9,9 +9,11 @@ def home_page(request):
 
         rooms = Room.objects.all()
         users = User.objects.all()
+        profiles = Profile.objects.filter(user=request.user)
         context = {
             'rooms': rooms,
-            'users': users
+            'users': users,
+            'profile': profiles
         }
         return render(request, 'dashboard/home.html', context)
     else:

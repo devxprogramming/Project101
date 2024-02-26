@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from accounts.models import User, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from accounts.forms import RegisterUserForm
 from django.contrib.auth.forms import AuthenticationForm
 
+
 def login_view(request):
     if request.user.is_authenticated:
+        messages.info(request, "You are already looged In")
         return redirect('dashboard')
     page = 'login_page'
     if request.method == 'POST':
@@ -19,7 +21,7 @@ def login_view(request):
                 login(request, user)
                 return redirect('dashboard')
             else:
-                messages.error(request, 'Invalid username or password')
+                messages.info(request, 'Invalid username or password')
                 return redirect('login')
         except:
             messages.error(request, 'Invalid username or password')
@@ -85,5 +87,16 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.info(request, 'You have been logged out')
+    messages.success(request, 'Logged out Successful')
     return redirect('login')
+
+
+def user_profile(request):
+    profile = Profile.objects.all()
+    user = User.objects.all()
+    
+    context = {
+        'profile':profile,
+        'user':user
+    }
+    return render(request, 'accounts/user_profile.html', context)
