@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from classroom.forms import RoomForm
 from classroom.models import Room
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def create_room(request):
+    if request.user.profile.account_type == 'Student':
+        return redirect('dashboard')
     page = 'create_room'
     form = RoomForm
     if request.method == 'POST':
@@ -11,7 +15,7 @@ def create_room(request):
             room = form.save(commit=False)
             room.host = request.user
             room.save()
-            return redirect('dashboard')
+            return redirect('all_rooms')
         else:
             form = RoomForm()
         
@@ -41,7 +45,7 @@ def update_room(request, pk):
 
 
 def delete_room(request, pk):
-    room = Room.objects.get(id=pk)
+    room = Room.objects.get(room_code=pk)
     if request.method == "POST":
         room.delete()
         return redirect('dashboard')
@@ -49,3 +53,11 @@ def delete_room(request, pk):
         'obj':room
     }
     return render(request, 'room/delete_room.html', context)
+
+
+def show_all_rooms(request):
+    rooms = Room.objects.all()
+    context = {
+        'rooms': rooms
+    }
+    return render(request, 'room/all_rooms.html', context)

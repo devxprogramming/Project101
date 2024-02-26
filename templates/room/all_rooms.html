@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}All Rooms{% endblock  %}
+
+
+{% block content %}
+
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+   {% if rooms %}
+        <main class="main" id="main">
+            <div class="row">
+                    {% for room in rooms %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Course Code:
+                                    <span class="badge bg-primary text-light">{{room.course_code|truncatechars:7}}</span>
+                                </h3>
+                                <p class="card-text">
+                                    <span class="text-primary">Course Title:</span>
+                                    <b>{{room.course_title}}</b>
+                                </p>
+                                <p class="card-text">
+                                    <span class="text-primary">Course Description:</span>
+                                    {{room.description|truncatechars:20}}
+                                </p>
+                            </div>
+                            <div class="card-footer d-flex">
+                                <a href="{% url "delete_room" room.room_code %}" class="ms-auto btn-sm btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                        
+        </main>
+   {% endif %}
+    
+
+{% endblock %}
