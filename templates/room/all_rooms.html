@@ -12,6 +12,7 @@
    {% if rooms %}
         <main class="main" id="main">
             <div class="row">
+                {% include "base/alert.html" %}
                     {% for room in rooms %}
                     <div class="col-4">
                         <div class="card">

@@ -19,6 +19,7 @@ def login_view(request):
             user = authenticate(username=school_id, password=password)
             if user is not None:
                 login(request, user)
+                messages.success(request, 'Logged in Successful')
                 return redirect('dashboard')
             else:
                 messages.info(request, 'Invalid username or password')
@@ -41,7 +42,6 @@ def register_view(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             newuser = form.save(commit=False)
-            print(request.POST['school_id'])
             if 'LE' in request.POST['school_id']:
                 newuser.account_type = 'Lecturer'
                 newuser.save()
