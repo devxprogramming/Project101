@@ -3,12 +3,13 @@ from accounts.models import User, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from accounts.forms import RegisterUserForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 def login_view(request):
     if request.user.is_authenticated:
-        messages.info(request, "You are already looged In")
+        messages.info(request, f"You are already looged In. Welcome back {request.user}")
         return redirect('dashboard')
     page = 'login_page'
     if request.method == 'POST':
@@ -86,8 +87,9 @@ def register_view(request):
     return render(request, 'accounts/login_register.html', context)
 
 def logout_view(request):
+    user = request.user
     logout(request)
-    messages.success(request, 'Logged out Successful')
+    messages.success(request, f'{user} Logged out Successfully')
     return redirect('login')
 
 
@@ -100,3 +102,22 @@ def user_profile(request):
         'user':user
     }
     return render(request, 'accounts/user_profile.html', context)
+
+
+def change_password(request):
+    page = "change_password"
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/user_profile.html', {
+        'form': form,
+        "page":page,
+    })

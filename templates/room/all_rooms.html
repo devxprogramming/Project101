@@ -9,14 +9,15 @@
     {% include "base/header.html" %}
     {% include "base/sidebar.html" %}
 
-   {% if rooms %}
-        <main class="main" id="main">
-            <div class="row">
-                {% include "base/alert.html" %}
+    <main class="main" id="main">
+        <div class="row">
+            {% include "base/alert.html" %}
+            {% if rooms %}
                     {% for room in rooms %}
                     <div class="col-4">
                         <div class="card">
                             <div class="card-body">
+                                <img src="{{room.room_avatar.url}}" class="img-rounded-circle" alt="" srcset="">
                                 <h3 class="card-title">Course Code:
                                     <span class="badge bg-primary text-light">{{room.course_code|truncatechars:7}}</span>
                                 </h3>
@@ -29,16 +30,52 @@
                                     {{room.description|truncatechars:20}}
                                 </p>
                             </div>
-                            <div class="card-footer d-flex">
-                                <a href="{% url "delete_room" room.room_code %}" class="ms-auto btn-sm btn btn-danger">Delete</a>
-                            </div>
+                            {% if request.user == room.host %}
+                                <div class="card-footer d-flex">
+                                    <a href="{% url "delete_room" room.room_code %}" class="ms-auto btn-sm btn btn-danger">Delete</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+                        <h1 class="text-center mt-md-5">No rooms Available</h1>
+                        <div class="d-flex justify-content-center">
+                            <a href="{% url "create_room" %}" class="btn btn-success w-25 ">Create Room</a>
+                        </div>
                 </div>
-                        
-        </main>
-   {% endif %}
+
+                
+                
+            </main>
+            {% endif %}
+            <nav class="d-flex" aria-label="Page navigation">
+                <ul
+                    class="pagination   ms-auto me-auto "
+                >
+                    {% if page_obj.has_previous %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="?page=1">1</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=3">3</a>
+                    </li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
     
 
 {% endblock %}

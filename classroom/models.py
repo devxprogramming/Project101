@@ -3,6 +3,13 @@ from accounts.models import User
 from uuid import uuid4
 
 
+
+def avatar_directory_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{instance.course_code}.{ext}'
+    return f'room_avatars/{filename}'
+
+
 PRIVACY = (
     ('Public', 'Public'),
     ('Private', 'Private'),
@@ -20,6 +27,7 @@ class Room(models.Model):
     participants = models.ManyToManyField(User, related_name='participants')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    room_avatar = models.FileField(upload_to=avatar_directory_path, default='default.png', null=True, blank=True)
 
     def __str__(self):
         return self.course_title[:20]

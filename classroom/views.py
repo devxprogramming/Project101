@@ -3,6 +3,7 @@ from classroom.forms import RoomForm
 from classroom.models import Room
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
 @login_required(login_url='login')
 def create_room(request):
     if request.user.profile.account_type == 'Student':
@@ -59,8 +60,12 @@ def delete_room(request, pk):
 
 
 def show_all_rooms(request):
-    rooms = Room.objects.all()
+    room = Room.objects.all()
+    paginator = Paginator(room, 10)
+    page = request.GET.get('page')
+    rooms = paginator.get_page(page)
     context = {
         'rooms': rooms
+        # 'page':page,
     }
     return render(request, 'room/all_rooms.html', context)
