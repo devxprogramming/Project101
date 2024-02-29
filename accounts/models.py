@@ -50,6 +50,8 @@ class Profile(models.Model):
     password = models.CharField(max_length=255, null=True)
     avatar = models.FileField(upload_to=avatar_path, default='default.png', null=True, blank=True)
     
+    def __str__(self):
+        return self.school_id
 
     
 
