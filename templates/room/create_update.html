@@ -44,7 +44,7 @@
                         
                                         <div class="card-body">
                                             <h5 class="card-title">Create a classroom for Students to join</h5>
-                                            <form method="POST" class="row g-3 needs-validation" novalidate>
+                                            <form method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
                                                 {% csrf_token %}
                                                 <div class="col-md-12">
                                                     {% render_field form.course_title class="form-control" placeholder="Courser Title" %}
@@ -63,6 +63,9 @@
                                                   </div>
                                                   <div class="col-md-6">
                                                     <input type="text" class="form-control bg-danger-subtle" disabled name="host" id="host" value="{{request.user}}" readonly>
+                                                  </div>
+                                                  <div class="col-md-12">
+                                                    {% render_field form.room_avatar class="form-control"%}
                                                   </div>
                                                   <div class="text-center">
                                                     <button type="submit" class="btn btn-primary w-100">Creat Now</button>
@@ -84,11 +87,66 @@
 
     {% elif page == 'update_room' %}
 
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{form}}
-            <button type="submit">Update</button>
-        </form>
+    <main>
+        <div class="container">
+            
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    {% include "base/alert.html" %}
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+            
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                <img src="assets/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">Create Room</span>
+                                </a>
+                            </div><!-- End Logo -->
+            
+                            <div class="card mb-3">
+                
+                                <div class="card-body">
+                                    <h5 class="card-title">Create a classroom for Students to join</h5>
+                                    <form method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="col-md-12">
+                                            {% render_field form.course_title class="form-control" %}
+                                          </div>
+                                          <div class="col-md-6">
+                                            {% render_field form.course_code class="form-control" placeholder="Course Code" %}
+                                          </div>
+                                          <div class="col-md-6">
+                                            {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
+                                          </div>
+                                          <div class="col-12">
+                                            {% render_field form.description class="form-control" rows="2" cols="2" placeholder="Room Description" %}
+                                          </div>
+                                          <div class="col-md-6">
+                                            {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}
+                                          </div>
+                                          <div class="col-md-6">
+                                            <input type="text" class="form-control bg-danger-subtle" disabled name="host" id="host" value="{{request.user}}" readonly>
+                                          </div>
+                                          <div class="col-md-12">
+                                            {% render_field form.room_avatar class="form-control"%}
+                                          </div>
+                                          <div class="text-center">
+                                            <button type="submit" class="btn btn-primary w-100">Creat Now</button>
+                                          </div>           
+                                    </form>
+                
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+            
+        </div>
+    </main>
 
     {% else %}
 

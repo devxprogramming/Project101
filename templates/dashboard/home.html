@@ -620,7 +620,11 @@
 
                     {% for room in paginate_room %}
                     <div class="post-item clearfix">
-                        <img src="{{room.room_avatar.url}}" class="img-rounded-circle-home " alt="">
+                        {% if room.room_avatar %}
+                            <img src="{{room.room_avatar.url}}" class="img-rounded-circle-home " alt="">
+                        {% else %}
+                        <img src="" class="img-rounded-circle-home" alt="No Profile Found">
+                        {% endif %}
                         <h4><a href="#" class="badge bg-danger">{{room.host}}</a> just created {{room.course_code|truncatechars:7}}</h4>
                         <p>{{room.description}} </p>
                     </div>

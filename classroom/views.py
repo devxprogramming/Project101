@@ -11,7 +11,7 @@ def create_room(request):
     page = 'create_room'
     form = RoomForm
     if request.method == 'POST':
-        form = RoomForm(request.POST)
+        form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
             room = form.save(commit=False)
             room.host = request.user
@@ -27,17 +27,19 @@ def create_room(request):
     }
     return render(request, 'room/create_update.html', context)
 
-
+@login_required(login_url="login")
 def update_room(request, pk):
+    if request.user != Room.objects.get(room_code=pk).host:
+        return redirect('all_rooms')
     page = 'update_room'
-    room = Room.objects.get(id=pk)
+    room = Room.objects.get(room_code=pk)
     form = RoomForm(instance=room)
     if request.method == "POST":
-        form = RoomForm(request.POST, instance=room)
+        form = RoomForm(request.POST, instance=room, files=request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Room updated successfully')
-            return redirect('dashboard')
+            return redirect('all_rooms')
         
     context = {
         'page':page,
@@ -46,13 +48,15 @@ def update_room(request, pk):
         
     return render(request, 'room/create_update.html', context)
 
-
+@login_required(login_url='login')
 def delete_room(request, pk):
+    if request.user != Room.objects.get(room_code=pk).host:
+        return redirect('all_rooms')
     room = Room.objects.get(room_code=pk)
     if request.method == "POST":
         room.delete()
         messages.success(request, 'Room deleted successfully')
-        return redirect('dashboard')
+        return redirect('all_rooms')
     context = {
         'obj':room
     }

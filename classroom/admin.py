@@ -2,4 +2,11 @@ from django.contrib import admin
 from classroom.models import Room
 
 
-admin.site.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ['course_title', 'course_code', 'room_password', 'description', 'host', 'room_code']
+    readonly_fields = ['host', 'room_code']
+
+
+
+
+admin.site.register(Room, RoomAdmin)

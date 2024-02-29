@@ -24,10 +24,10 @@ class Room(models.Model):
     room_password = models.CharField(max_length=255, null=True, blank=True)
     room_privacy = models.CharField(max_length=255, null=True, choices=PRIVACY, blank=True)
     # slug = models.SlugField(unique=True)
-    participants = models.ManyToManyField(User, related_name='participants')
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     room_avatar = models.FileField(upload_to=avatar_directory_path, default='default.png', null=True, blank=True)
 
     def __str__(self):
-        return self.course_title[:20]
+        return self.course_title[:10]
