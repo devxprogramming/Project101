@@ -40,6 +40,7 @@ def update_room(request, pk):
     if request.method == "POST":
         form = RoomForm(request.POST, instance=room, files=request.FILES)
         if form.is_valid():
+            room.check_password(form.cleaned_data['room_password'])
             form.save()
             messages.success(request, 'Room updated successfully')
             return redirect('all_rooms')
@@ -51,13 +52,16 @@ def update_room(request, pk):
         
     return render(request, 'room/create_update.html', context)
 
-
+@login_required(login_url='login')
 def private_room(request, pk):
     if request.method == "POST":
         room = get_object_or_404(Room, room_code=pk)
         password = request.POST.get('password')
         if password == room.room_password:
+            messages.success(request, 'Authorised')
             return redirect('update_room', pk)
+        else:
+            messages.info(request, 'Wrong password')
     return render(request, 'room/private_room.html')
 
 @login_required(login_url='login')

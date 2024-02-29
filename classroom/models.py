@@ -37,4 +37,7 @@ class Room(models.Model):
             # Set room_privacy to Public
             self.room_privacy = 'Public'
             self.save()
+        elif self.room_password is not None:
+            self.room_privacy = 'Private'
+            self.save()
         

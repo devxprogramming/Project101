@@ -33,7 +33,16 @@
                                     <form method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
                                         {% csrf_token %}
                                         <div class="col-md-12">
-                                            <input type="password" class="form-control" placeholder="Enter Room Password" name="password" id="password">
+                                            
+                                            <div class="input-group mb-3">
+                                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="togglePassword">
+                                                <div class="input-group-append">
+                                                  <span class="input-group-text" id="togglePassword">
+                                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                                  </span>
+                                                </div>
+                                            </div> 
+                                            
                                         </div>
                                           <div class="text-center">
                                             <button type="submit" class="btn btn-success w-100">Proceed</button>
