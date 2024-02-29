@@ -38,7 +38,11 @@
                             {% if request.user == room.host %}
                                 <div class="card-footer d-flex">
                                     <a href="{% url "delete_room" room.room_code %}" class="ms-auto btn-sm btn btn-danger">Delete</a>
-                                    <a href="{% url "update_room" room.room_code %}" class="ms-md-2 btn-sm btn btn-warning">Update</a>
+                                    {% if room.room_privacy == "Public" %}
+                                        <a href="{% url "update_room" room.room_code %}" class="ms-md-2 btn-sm btn btn-warning">Update</a>
+                                    {% elif room.room_privacy == "Private" %}
+                                        <a href="{% url "private_room" room.room_code %}" class="ms-md-2 btn-sm btn btn-warning">Update</a>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </div>

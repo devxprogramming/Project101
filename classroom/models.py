@@ -31,3 +31,10 @@ class Room(models.Model):
 
     def __str__(self):
         return self.course_title[:10]
+    
+    def check_password(self, password):
+        if self.room_password is None:
+            # Set room_privacy to Public
+            self.room_privacy = 'Public'
+            self.save()
+        

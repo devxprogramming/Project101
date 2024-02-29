@@ -13,8 +13,10 @@ def create_room(request):
     if request.method == 'POST':
         form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
+            password = form.cleaned_data['room_password']
             room = form.save(commit=False)
             room.host = request.user
+            room.check_password(password)
             room.save()
             messages.success(request, 'Room created successfully')
             return redirect('all_rooms')
@@ -31,6 +33,7 @@ def create_room(request):
 def update_room(request, pk):
     if request.user != Room.objects.get(room_code=pk).host:
         return redirect('all_rooms')
+    
     page = 'update_room'
     room = Room.objects.get(room_code=pk)
     form = RoomForm(instance=room)
@@ -47,6 +50,15 @@ def update_room(request, pk):
     }
         
     return render(request, 'room/create_update.html', context)
+
+
+def private_room(request, pk):
+    if request.method == "POST":
+        room = get_object_or_404(Room, room_code=pk)
+        password = request.POST.get('password')
+        if password == room.room_password:
+            return redirect('update_room', pk)
+    return render(request, 'room/private_room.html')
 
 @login_required(login_url='login')
 def delete_room(request, pk):
