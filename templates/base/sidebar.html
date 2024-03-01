@@ -3,7 +3,10 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
+      <li class="nav-item" 
+      data-bs-placement="top"
+      data-bs-toggle="tooltip"
+      title="Dashboard">
         <a class="nav-link " href="{% url "dashboard" %}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
@@ -16,7 +19,9 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           {% if request.user.profile.account_type == 'Lecturer' %}
-            <li>
+            <li data-bs-placement="right"
+            data-bs-toggle="tooltip"
+            title="Create a Room">
               <a href="{% url "create_room" %}">
                 <i class="bi bi-circle"></i><span>Create Room</span>
               </a>
@@ -112,7 +117,7 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url "user_profile" %}">
+        <a class="nav-link collapsed" href="{% url "user_profile" request.user.school_id%}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>

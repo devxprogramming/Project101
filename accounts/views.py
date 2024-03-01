@@ -93,8 +93,8 @@ def logout_view(request):
     return redirect('login')
 
 
-def user_profile(request):
-    profile = Profile.objects.all()
+def user_profile(request, pk):
+    profile = Profile.objects.get(school_id=pk)
     user = User.objects.all()
     
     context = {

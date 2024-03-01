@@ -81,7 +81,7 @@ def delete_room(request, pk):
 
 def show_all_rooms(request):
     room = Room.objects.all()
-    paginator = Paginator(room, 10)
+    paginator = Paginator(room, 5)
     page = request.GET.get('page')
     rooms = paginator.get_page(page)
     context = {
