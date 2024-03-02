@@ -1,5 +1,9 @@
-./db.sqlite
+db.sqlite
 
-./.vscode
+.vscode
 
-./.pytest_cache
+.pytest_cache
+
+.vscode/
+.idea/
+.pytest_cache/
