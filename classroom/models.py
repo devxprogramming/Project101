@@ -41,4 +41,15 @@ class Room(models.Model):
             self.room_privacy = 'Private'
             self.save()
             
-        
+
+
+class Message(models.Model):
+    message_code = models.UUIDField(default=uuid4, unique=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.body[:10]

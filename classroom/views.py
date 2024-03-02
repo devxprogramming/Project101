@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from classroom.forms import RoomForm
-from classroom.models import Room
+from classroom.forms import RoomForm, MessageForm
+from classroom.models import Room, Message
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -14,6 +14,14 @@ def create_room(request):
         form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
             password = form.cleaned_data['room_password']
+            course_code = form.cleaned_data['course_code']
+            course_title = form.cleaned_data['course_title']
+            if Room.objects.filter(course_code=course_code).exists():
+                messages.info(request, 'Course Code already exists')
+                return redirect('create_room')
+            elif Room.objects.filter(course_title=course_title).exists():
+                messages.info(request, 'Course Title already exists')
+                return redirect('create_room')
             room = form.save(commit=False)
             room.host = request.user
             room.check_password(password)
@@ -81,11 +89,48 @@ def delete_room(request, pk):
 
 def show_all_rooms(request):
     room = Room.objects.all()
-    paginator = Paginator(room, 5)
+    paginator = Paginator(room, 6)
     page = request.GET.get('page')
     rooms = paginator.get_page(page)
+    room_count = Room.objects.all().count()
     context = {
-        'rooms': rooms
+        'rooms': rooms,
+        'room_count':room_count,
         # 'page':page,
     }
     return render(request, 'room/all_rooms.html', context)
+
+@login_required(login_url='login')
+def room_message(request, pk):
+    room = get_object_or_404(Room, room_code=pk)
+    get_messages = Message.objects.filter(room=room)
+    participants = room.participants.all()
+    message_form = MessageForm()
+    if request.method == "POST":
+        room_messages = Message.objects.create(
+            user = request.user,
+            room = room,
+            body = request.POST.get('body') 
+        )
+        room.participants.add(request.user)
+        return redirect('room_message', pk)
+        
+    context = {
+        'room':room,
+        'message_form':message_form,
+        'get_messages':get_messages,
+        "participants":participants,
+    }
+    return render(request, 'room/room_message.html', context)
+
+
+def delete_message(request,pk):
+    get_message = get_object_or_404(Message, message_code=pk)
+    if request.method == "POST":
+        get_message.delete()
+        messages.success(request, 'Message deleted Success')
+        return redirect(room_message, get_message.room.room_code)
+    context = {
+        "obj":get_message
+    }
+    return render(request, 'base/delete.html', context)

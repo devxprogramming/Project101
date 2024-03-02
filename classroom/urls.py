@@ -7,4 +7,6 @@ urlpatterns = [
     path('delete-room/<str:pk>/', views.delete_room, name='delete_room'),
     path('all-rooms/', views.show_all_rooms, name='all_rooms'),
     path('private-room/<str:pk>/', views.private_room, name='private_room'),
+    path('room-message/<str:pk>/', views.room_message, name='room_message'),
+    path('delete-message/<str:pk>', views.delete_message, name="delete_message"),
 ]

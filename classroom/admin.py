@@ -1,5 +1,5 @@
 from django.contrib import admin
-from classroom.models import Room
+from classroom.models import Room, Message
 
 
 class RoomAdmin(admin.ModelAdmin):
@@ -8,5 +8,5 @@ class RoomAdmin(admin.ModelAdmin):
 
 
 
-
 admin.site.register(Room, RoomAdmin)
+admin.site.register(Message)

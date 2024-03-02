@@ -1,0 +1,146 @@
+{% extends "base/base.html" %}
+
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Room Messages{% endblock  %}
+
+{% block content %}
+
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Room Messages</h1>
+          <nav>
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active">Room Messages</li>
+                </ol>
+          </nav>
+        </div><!-- End Page Title -->
+
+        {% include "base/alert.html" %}
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top img-rounded-circle" src="{{room.room_avatar.url}}" alt="Title" />
+                    <div class="card-body">
+                        <h4 class="card-title">Room Name: {{room.course_code|truncatechars:5}}</h4>
+                        <p class="card-text text-primary">Room Description: <span class="text-dark">{{room.description|truncatechars:20}}</span></p>
+                        <small class="card-text">Created By: <span class="badge bg-primary">{{room.host}}</span></small>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex">
+                            <p class="card-text ms-auto"><small class="text-muted">{{room.created|date}}</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card message-card">
+                    <div class="card-body">
+                        <h4 class="card-title">People/Participants</h4>
+                        {% if participants %}
+                            {% for user in participants %}
+                                
+                                <p class="card-text fw-bolder">
+                                    {{user.username}}
+                                </p>
+                            {% endfor %}
+                        {% else %}
+                        <div
+                            class="alert alert-primary"
+                            role="alert"
+                        >
+                            <strong>No Participant{{participants|pluralize}}</strong> Found
+                        </div>
+                    
+                        
+                        {% endif %}
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card message-card">
+                    <div class="card-body">
+                        <h4 class="card-title">Room Chat</h4>
+                        {% if get_messages %}
+                            {% for message in get_messages %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card ">
+                                            <div class="card-body">
+                                                <span class="badge bg-primary mt-md-3">{{message.user}}</span>
+                                                <p class="card-text">{{message.body}}</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                {% if message.user == request.user %}
+                                                    <a href="{% url "delete_message" message.message_code %}" class="btn btn-sm btn-danger"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="bottom"
+                                                    title="Delete Message"
+                                                    >Delete</a>
+                                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                                {% endif %}
+                                                <div class="d-flex">
+                                                    <p class="card-text ms-auto"><small class="text-muted fw-bolder">created: {{message.created|timesince}}</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                        
+                        <div
+                            class="alert alert-primary alert-dismissible fade show"
+                            role="alert"
+                        >
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"
+                            ></button>
+                            <strong>No message found</strong> for this classroom
+                        </div>
+                        
+                        <script>
+                            var alertList = document.querySelectorAll(".alert");
+                            alertList.forEach(function (alert) {
+                                new bootstrap.Alert(alert);
+                            });
+                        </script>
+                        
+                    
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card mb-md-5">
+                    <div class="card-body">
+                        <form action="" class="mt-4" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group has-validation">
+                                <div class="form-floating">
+                                  {% render_field message_form.body rows="2" cols="2" class="form-control message-inp" name='message' id="floatingInput"  placeholder="Message.." %}
+                                  <label for="floatingInput">Message..</label>
+                                </div>
+                                <button class="btn btn-primary btn-sm message-btn" type="submit">Send</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+
+{% endblock  %}
+
+

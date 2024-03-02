@@ -27,7 +27,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Search Result for <b>"{{query}}"</b></h5>
+                            <h5 class="card-title">
+                                <span class="badge bg-secondary text-light">{{rooms.count}}</span> Search Result{{rooms|pluralize}} for <b>"{{query}}"</b>
+                            </h5>
                             {% if rooms %}
                             <div class="row">
                                     {% for room in rooms %}
@@ -47,7 +49,7 @@
                                                     <span class="text-primary fw-bold">Room Description:</span>
                                                     {{room.description}}
                                                 </p>
-                                                <a href="{% url "user_profile" room.host.school_id %}" class="btn btn-primary">View Host</a>
+                                                <a href="{% url "room_message" room.room_code %}" class="btn btn-primary">Enter  Room</a>
                                             </div>
                                         </div>
                                     </div>
