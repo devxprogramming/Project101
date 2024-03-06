@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Create Resources{% endblock  %}
+
+
+{% block content %}
+
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Create Resources</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                    <li class="breadcrumb-item active">Create Resources</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Create Resources</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <label for="id_filename" class="form-label"> Filename </label>
+                                        {% render_field form.filename class="form-control" placeholder="Enter Filename.." %}
+                    
+                                        <label for="id_upload" class="form-label"> Upload File </label>
+                                        {% render_field form.upload class="form-control" placeholder="Choose File.." %}
+                    
+                                        <label for="id_department" class="form-label"> Department </label>
+                                        {% render_field form.department class="form-select"  %}
+                                        
+                                        <button type="submit" class="btn btn-success mt-2 w-100">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+        </section>
+
+    </main>
+
+{% endblock %}
+
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Create Resources</h5>
+                <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                </form>
+            </div>
+        </div>
+</div>

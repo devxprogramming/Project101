@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from classroom.forms import RoomForm, MessageForm
-from classroom.models import Room, Message
+from classroom.forms import RoomForm, MessageForm, ResourceForm
+from classroom.models import Room, Message, Resource
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -16,16 +16,31 @@ def create_room(request):
             password = form.cleaned_data['room_password']
             course_code = form.cleaned_data['course_code']
             course_title = form.cleaned_data['course_title']
+            participants = form.cleaned_data['participants']
+            resource = form.cleaned_data["resources"]
+
+            
             if Room.objects.filter(course_code=course_code).exists():
                 messages.info(request, 'Course Code already exists')
                 return redirect('create_room')
             elif Room.objects.filter(course_title=course_title).exists():
                 messages.info(request, 'Course Title already exists')
                 return redirect('create_room')
-            room = form.save(commit=False)
+            room = form.save(commit=False)        
             room.host = request.user
             room.check_password(password)
             room.save()
+            
+            # Save Participants
+            participants = form.cleaned_data.get('participants')
+            room.participants.set(participants)
+
+            # Save resources
+            resources = form.cleaned_data.get('resources')
+            room.resources.set(resources)
+            
+            
+            
             messages.success(request, 'Room created successfully')
             return redirect('all_rooms')
         else:
@@ -105,6 +120,7 @@ def room_message(request, pk):
     room = get_object_or_404(Room, room_code=pk)
     get_messages = Message.objects.filter(room=room)
     participants = room.participants.all()
+    resources = room.resources.all()
     message_form = MessageForm()
     if request.method == "POST":
         room_messages = Message.objects.create(
@@ -120,6 +136,7 @@ def room_message(request, pk):
         'message_form':message_form,
         'get_messages':get_messages,
         "participants":participants,
+        "resources":resources,
     }
     return render(request, 'room/room_message.html', context)
 
@@ -134,3 +151,26 @@ def delete_message(request,pk):
         "obj":get_message
     }
     return render(request, 'base/delete.html', context)
+
+
+
+
+def create_resources(request):
+    form = ResourceForm()
+    if request.method == "POST":
+        form = ResourceForm(request.POST, request.FILES)
+        if form.is_valid():
+            filename = form.cleaned_data['filename']
+            resource = form.save(commit=False)
+            resource.author = request.user
+            if Resource.objects.filter(filename=filename).exists():
+                messages.info(request, 'Resource already exists')
+                return redirect('create_resources')
+            resource.save()
+            messages.success(request, 'Resource created successfully')
+            return redirect('dashboard')
+        
+    context = {
+        'form':form
+    }
+    return render(request, 'resources/create_resources.html', context)

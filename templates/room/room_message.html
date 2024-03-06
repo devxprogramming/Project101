@@ -6,7 +6,6 @@
 {% block title %}Room Messages{% endblock  %}
 
 {% block content %}
-
     {% include "base/header.html" %}
     {% include "base/sidebar.html" %}
 
@@ -62,7 +61,45 @@
                     </div>
                     
                 </div>
-                
+
+                <!-- Resources Available-->
+                <div class="card message-card">
+                    <div class="card-body">
+                        <h4 class="card-title">Resources Available</h4>
+                        {% if resources %}
+                            {% for resource in resources %}
+                                
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Filename: <span class="badge bg-primary text-light">{{resource.filename}}</span></h4>
+                                        <p class="card-text">Department: {{resource.department}}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex">
+                                            <p class="card-text ms-auto"><small class="text-muted">Created on: {{resource.created|date}}</small></p>
+                                            <div class="card-text ms-sm-2">Uploaded by: {{resource.author}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            {% endfor %}
+                        {% else %}
+                        <div
+                            class="alert alert-primary"
+                            role="alert"
+                        >
+                            <strong>No </strong>Resource{{resources|pluralize}} Found
+                        </div>
+
+                            {% if request.user == room.host or request.user.is_staff  %}
+                                <a href="{% url 'update_room' room.room_code %}" class="btn btn-primary">Add Resources</a>
+                            {% endif %}
+                    
+                        
+                        {% endif %}
+                    </div>
+                    
+                </div>
             </div>
             
             <div class="col-md-8">
@@ -74,21 +111,38 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card ">
-                                            <div class="card-body">
-                                                <span class="badge bg-primary mt-md-3">{{message.user}}</span>
-                                                <p class="card-text">{{message.body}}</p>
-                                            </div>
+                                            {% if message.user.account_type == "Lecturer" or request.user.is_staff %}
+                                                <div class="card-body bg-danger text-light rounded-3"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="left"
+                                                title="Lecturer">
+                                                    <span class="badge bg-danger mt-md-3">{{message.user}}</span>
+                                                    <p class="card-text">{{message.body}}</p>
+                                                </div>
+                                                {% elif message.user.account_type == "Student" %}
+                                                    <div class="card-body">
+                                                        <span class="badge bg-primary mt-md-3">{{message.user}}</span>
+                                                        <p class="card-text">{{message.body}}</p>
+                                                    </div>
+                                            {% endif %}
                                             <div class="card-footer">
-                                                {% if message.user == request.user %}
+                                                {% if message.user.account_type == "Lecturer" or request.user.is_staff or message.user == request.user %}
                                                     <a href="{% url "delete_message" message.message_code %}" class="btn btn-sm btn-danger"
-                                                    data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom"
-                                                    title="Delete Message"
-                                                    >Delete</a>
-                                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="bottom"
+                                                        title="Delete Message">
+                                                        Delete
+                                                    </a>
+                                                    
+                                                    <button class="btn btn-sm btn-warning"
+                                                    class="btn btn-primary btn-lg">
+                                                    Edit
+                                                    </button>
+                                                {% else %}
+                                                <p>You don't have Permission</p>
                                                 {% endif %}
                                                 <div class="d-flex">
-                                                    <p class="card-text ms-auto"><small class="text-muted fw-bolder">created: {{message.created|timesince}}</small></p>
+                                                    <p class="card-text ms-auto"><small class="text-muted fw-bolder">sent: {{message.created|timesince}}</small></p>
                                                 </div>
                                             </div>
                                         </div>

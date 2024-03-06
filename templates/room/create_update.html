@@ -53,7 +53,7 @@
                                                     {% render_field form.course_code class="form-control" placeholder="Course Code" %}
                                                   </div>
                                                   <div class="col-md-12">
-                                                    <div class="input-group mb-3">
+                                                    <div class="input-group">
                                                       {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
                                                       <div class="input-group-append">
                                                         <span class="input-group-text" id="togglePassword">
@@ -63,7 +63,15 @@
                                                   </div> 
                                                   </div>
                                                   <div class="col-12">
-                                                    {% render_field form.description class="form-control" rows="2" cols="2" placeholder="Room Description" %}
+                                                    {% render_field form.description class="form-control" rows="1" cols="1" placeholder="Room Description" %}
+                                                  </div>
+                                                  <div class="col-md-12">
+                                                    <label for="participants"> Participants </label>
+                                                    {% render_field form.participants multiple="multiple" class="form-select" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
+                                                  </div>
+                                                  <div class="col-md-12">
+                                                    <label for="resources">Resources</label>
+                                                    {% render_field form.resources class="form-select" multiple="multiple" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
                                                   </div>
                                                   <div class="col-md-6">
                                                     {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}
@@ -130,6 +138,9 @@
                                           </div>
                                           <div class="col-12">
                                             {% render_field form.description class="form-control" rows="2" cols="2" placeholder="Room Description" %}
+                                          </div>
+                                          <div class="col-12">
+                                            {% render_field form.resources class="form-control" rows="2" cols="2" placeholder="Room Description" %}
                                           </div>
                                           <div class="col-md-6">
                                             {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}

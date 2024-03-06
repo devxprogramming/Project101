@@ -26,12 +26,15 @@ ACCOUNT_TYPE = (
     ("Lecturer","Lecturer")
 )
 
+
+
 class User(AbstractUser):
     school_id = models.CharField(max_length=255, unique=True)
     full_name = models.CharField(max_length=200, null=True)
     username = models.CharField(max_length=200, null=True, unique=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
+    department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
     gender = models.CharField(max_length=200, choices=GENDER)
     account_type = models.CharField(max_length=255, choices=ACCOUNT_TYPE, null=True)
     
@@ -52,6 +55,13 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.school_id
+    
+    
+class Department(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    
+    def __str__(self):
+        return self.name
 
     
 

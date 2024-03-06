@@ -26,6 +26,14 @@
                 <i class="bi bi-circle"></i><span>Create Room</span>
               </a>
             </li>
+
+            <li data-bs-placement="right"
+            data-bs-toggle="tooltip"
+            title="Add Resources">
+              <a href="{% url "create_resources" %}">
+                <i class="bi bi-circle"></i><span>Add Resources</span>
+              </a>
+            </li>
           {% else %}
           <li>
             <a href="{% url "all_rooms" %}">
@@ -49,6 +57,7 @@
           </li>
         </ul>
       </li><!-- End Forms Nav -->
+      
 
       {% comment %} <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -123,7 +132,7 @@
         </a>
       </li><!-- End Profile Page Nav -->
 
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a class="nav-link collapsed" href="pages-faq.html">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
@@ -163,7 +172,7 @@
           <i class="bi bi-file-earmark"></i>
           <span>Blank</span>
         </a>
-      </li><!-- End Blank Page Nav -->
+      </li><!-- End Blank Page Nav --> {% endcomment %}
 
     </ul>
 

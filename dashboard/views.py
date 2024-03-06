@@ -1,16 +1,24 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from classroom.models import Room
+from classroom.models import Room, Message
 from accounts.models import User, Profile
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 @login_required(login_url='login')
 def home_page(request):
     page = "dashboard"
+    date_time = datetime.now().time()
+    print(f"Date: {date_time}")
     
-    rooms = Room.objects.all()
+    rooms = Room.objects.all().order_by("-created")
+    
+    get_room_message = Message.objects.all().order_by("-updated")
+    paginate_messages = Paginator(get_room_message, 3)
+    page = request.GET.get('page')
+    paginate_messages = paginate_messages.get_page(page)
     
     paginator = Paginator(rooms, 5)
     page = request.GET.get('page')
@@ -26,6 +34,7 @@ def home_page(request):
         "students":students,
         'profile': profiles,
         "paginate_room":paginate_room,
+        "room_messages":paginate_messages,
     }
     return render(request, 'dashboard/home.html', context)
 
