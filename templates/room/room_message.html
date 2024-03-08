@@ -26,7 +26,11 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top img-rounded-circle" src="{{room.room_avatar.url}}" alt="Title" />
+                    {% if room.room_avatar %}
+                        <img src="{{room.room_avatar.url}}" class="img-rounded-circle" alt="">
+                    {% else %}
+                        <img src="" class="img-rounded-circle" alt="No profile Found">
+                    {% endif %}                    
                     <div class="card-body">
                         <h4 class="card-title">Room Name: {{room.course_code|truncatechars:5}}</h4>
                         <p class="card-text text-primary">Room Description: <span class="text-dark">{{room.description|truncatechars:20}}</span></p>
