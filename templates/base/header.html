@@ -121,46 +121,22 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
+            {% for message in room_messages %}
             <li class="message-item">
-              <a href="#">
+              <a href="{% url "room_message" message.room.room_code %}">
                 {% comment %} <img src="{% static 'assets/img/messages-1.jpg' %}" alt="" class="rounded-circle"> {% endcomment %}
                 <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
+                  <h4>{{message.user}}</h4>
+                  <p>{{message.body|truncatewords:10}}</p>
+                  <p>{{message.created|timesince}}</p>
                 </div>
               </a>
             </li>
+            {% endfor %}
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="message-item">
-              <a href="#">
-                {% comment %} <img src="{% static 'assets/img/messages-2.jpg' %}" alt="" class="rounded-circle"> {% endcomment %}
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                {% comment %} <img src="{% static 'assets/img/messages-3.jpg' %}" alt="" class="rounded-circle"> {% endcomment %}
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
               <hr class="dropdown-divider">
             </li>
 
