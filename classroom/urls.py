@@ -9,5 +9,6 @@ urlpatterns = [
     path('private-room/<str:pk>/', views.private_room, name='private_room'),
     path('room-message/<str:pk>/', views.room_message, name='room_message'),
     path('delete-message/<str:pk>', views.delete_message, name="delete_message"),
+    path('delete-all-rooms/', views.delete_all_rooms, name="delete_all_rooms"),
     path('create-resources/', views.create_resources, name='create_resources'),
 ]

@@ -101,6 +101,11 @@ def delete_room(request, pk):
     }
     return render(request, 'room/delete_room.html', context)
 
+def delete_all_rooms(request):
+    get_all_rooms = Room.objects.all()
+    get_all_rooms.delete()
+    return redirect('all_rooms')
+
 
 def show_all_rooms(request):
     room = Room.objects.all()
@@ -143,14 +148,8 @@ def room_message(request, pk):
 
 def delete_message(request,pk):
     get_message = get_object_or_404(Message, message_code=pk)
-    if request.method == "POST":
-        get_message.delete()
-        messages.success(request, 'Message deleted Success')
-        return redirect(room_message, get_message.room.room_code)
-    context = {
-        "obj":get_message
-    }
-    return render(request, 'base/delete.html', context)
+    get_message.delete()
+    return redirect(room_message, get_message.room.room_code)
 
 
 

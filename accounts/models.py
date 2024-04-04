@@ -54,7 +54,7 @@ class Profile(models.Model):
     avatar = models.FileField(upload_to=avatar_path, default='default.png', null=True, blank=True)
     
     def __str__(self):
-        return self.school_id
+        return self.user.school_id
     
     
 class Department(models.Model):
@@ -68,7 +68,13 @@ class Department(models.Model):
 
 def create_profile(sender, created, instance, *args, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(
+            user=instance,
+            school_id=instance.school_id,
+            full_name=instance.full_name,
+            gender=instance.gender,
+            account_type=instance.account_type
+                               )
 
 def save_profile(sender, instance, *args, **kwargs):
     instance.profile.save()

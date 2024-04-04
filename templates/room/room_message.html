@@ -115,40 +115,72 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card ">
-                                            {% if message.user.account_type == "Lecturer" or request.user.is_staff %}
-                                                <div class="card-body bg-danger text-light rounded-3"
+                                            {% if message.user.account_type == "Lecturer" %}
+                                            <div class="card-body bg-danger text-light rounded-3"
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="left"
                                                 title="Lecturer">
-                                                    <span class="badge bg-danger mt-md-3">{{message.user}}</span>
-                                                    <p class="card-text">{{message.body}}</p>
-                                                </div>
-                                                {% elif message.user.account_type == "Student" %}
-                                                    <div class="card-body">
-                                                        <span class="badge bg-primary mt-md-3">{{message.user}}</span>
-                                                        <p class="card-text">{{message.body}}</p>
+                                                    <div class="message-container d-flex">
+                                                        <a href="{% url 'user_profile' message.user %}" class="badge bg-light text-dark mt-md-3">@{{message.user}}</a>
+                                                        <div class="dropdown open ms-auto">
+                                                            <a
+                                                                class="dropdown-toggle btn-sm"
+                                                                type="button"
+                                                                id="triggerId"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                            
+                                                            </a>
+                                                            <div class="dropdown-menu" aria-labelledby="triggerId">
+                                                                {% if message.user == request.user or or message.user == message.room.host.user %}
+                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Delete</a>
+                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Edit</a>
+                                                                {% else %}
+                                                                <a class="dropdown-item" href="#">Unauthorised</a>
+                                                                {% endif %}
+                                                            </div>
+                                                            
+                                                        </div>
                                                     </div>
-                                            {% endif %}
-                                            <div class="card-footer">
-                                                {% if message.user.account_type == "Lecturer" or request.user.is_staff or message.user == request.user %}
-                                                    <a href="{% url "delete_message" message.message_code %}" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom"
-                                                        title="Delete Message">
-                                                        Delete
-                                                    </a>
                                                     
-                                                    <button class="btn btn-sm btn-warning"
-                                                    class="btn btn-primary btn-lg">
-                                                    Edit
-                                                    </button>
-                                                {% else %}
-                                                <p>You don't have Permission</p>
-                                                {% endif %}
-                                                <div class="d-flex">
-                                                    <p class="card-text ms-auto"><small class="text-muted fw-bolder">sent: {{message.created|timesince}}</small></p>
-                                                </div>
+                                                    <p class="card-text">{{message.body}}</p>
                                             </div>
+                                            {% elif message.user.account_type == "Student" %}
+                                            <div class="card-body text-light rounded-3"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="left"
+                                                title="Student">
+                                                <!--Drop Down Anchor-->
+                                                <div class="message-container d-flex">
+                                                    <a href="{% url 'user_profile' message.user %}" class="badge bg-light text-dark mt-md-3">@{{message.user}}</a>
+                                                    <div class="dropdown open ms-auto">
+                                                        <a
+                                                            class="dropdown-toggle btn-sm"
+                                                            type="button"
+                                                            id="triggerId"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                           
+                                                        </a>
+                                                        <div class="dropdown-menu" aria-labelledby="triggerId">
+                                                            {% if message.user == request.user or message.user == message.room.host.user%}
+                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Delete</a>
+                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Edit</a>
+                                                            {% else %}
+                                                                <a class="dropdown-item" href="#">Unauthorised</a>
+                                                            {% endif %}
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <p class="card-text text-dark">{{message.body}}</p>
+                                            </div>
+                                            {% else %}
+                                            <p>Invalid User</p>
+                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                 </div>

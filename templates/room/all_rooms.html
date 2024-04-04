@@ -26,6 +26,13 @@
                         <div class="card-body">
                             <div class="card-title">
                                 <span class="badge bg-secondary text-light">{{room_count}}</span> room{{rooms|pluralize}} available 
+                                <div class="d-flex">
+                                    {% if request.user.is_staff %}
+                                        {% if rooms %}
+                                            <a href="{% url 'delete_all_rooms' %}" class="ms-auto btn btn-danger btn-sm">Delete All Rooms</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="row">
                                 {% include "base/alert.html" %}
@@ -52,6 +59,7 @@
                                                     <span class="text-primary">Course Description:</span>
                                                     {{room.description|truncatechars:20}}
                                                 </p>
+                                                <small class="text-muted">Room ID: {{room.room_code}}</small>
                                             </div>
                                             <div class="card-footer d-flex">
                                                 {% if request.user == room.host %}

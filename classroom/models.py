@@ -27,7 +27,7 @@ class Room(models.Model):
     description = models.TextField(null=True)
     room_password = models.CharField(max_length=255, null=True, blank=True)
     room_privacy = models.CharField(max_length=255, null=True, choices=PRIVACY, blank=True)
-    resources = models.ManyToManyField('Resource', related_name='resources', null=True, blank=True)
+    resources = models.ManyToManyField('Resource', related_name='resources', blank=True)
     participants = models.ManyToManyField(User, related_name='participants', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
