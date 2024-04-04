@@ -11,4 +11,5 @@ urlpatterns = [
     path('delete-message/<str:pk>', views.delete_message, name="delete_message"),
     path('delete-all-rooms/', views.delete_all_rooms, name="delete_all_rooms"),
     path('create-resources/', views.create_resources, name='create_resources'),
+    path('download/<str:pk>/', views.download_reference_material, name='download_reference_material'),
 ]

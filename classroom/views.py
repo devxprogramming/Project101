@@ -4,6 +4,11 @@ from classroom.models import Room, Message, Resource
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.views.static import serve
+import os
+from django.http import Http404, HttpResponse
+from core.settings import BASE_DIR
+
 @login_required(login_url='login')
 def create_room(request):
     if request.user.profile.account_type == 'Student':
@@ -173,3 +178,19 @@ def create_resources(request):
         'form':form
     }
     return render(request, 'resources/create_resources.html', context)
+
+
+
+
+def download_reference_material(request, pk):
+    try:
+        reference_material = Resource.objects.get(id=pk)
+    except Resource.DoesNotExist:
+        return HttpResponse('Reference material not found.')
+
+    file_path = reference_material.upload.path
+    file_name = reference_material.upload.name.split('/')[-1]
+
+    response = serve(request, os.path.basename(file_name), os.path.dirname(file_path))
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    return response
