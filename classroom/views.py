@@ -1,3 +1,4 @@
+import mimetypes
 from django.shortcuts import render, redirect, get_object_or_404
 from classroom.forms import RoomForm, MessageForm, ResourceForm
 from classroom.models import Room, Message, Resource
@@ -6,7 +7,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.static import serve
 import os
-from django.http import Http404, HttpResponse
+from django.http import FileResponse, Http404, HttpResponse
 from core.settings import BASE_DIR
 
 @login_required(login_url='login')
@@ -191,6 +192,13 @@ def download_reference_material(request, pk):
     file_path = reference_material.upload.path
     file_name = reference_material.upload.name.split('/')[-1]
 
-    response = serve(request, os.path.basename(file_name), os.path.dirname(file_path))
+    # Get the file extension based on the MIME type
+    mime_type, _ = mimetypes.guess_type(file_path)
+    if mime_type:
+        extension = mimetypes.guess_extension(mime_type)
+        if extension:
+            file_name = f"{file_name.split('.')[0]}{extension}"
+
+    response = FileResponse(open(file_path, 'rb'))
     response['Content-Disposition'] = f'attachment; filename="{file_name}"'
     return response

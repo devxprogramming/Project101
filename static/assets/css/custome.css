@@ -43,8 +43,15 @@
 .message-card{
     max-height: 50vh !important;
     overflow: scroll;
+    
 }
 
 .message-btn{
     position: static !important;
 }
+
+.font-size-sm{
+    font-size: 12px !important;
+}
+
+

@@ -76,13 +76,23 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">Filename: <span class="badge bg-primary text-light">{{resource.filename}}</span></h4>
-                                        <p class="card-text">Department: {{resource.department}}</p>
-                                        <a href="{% url "download_reference_material" resource.id %}" class="btn btn-primary">Download</a>
+                                        <p class="card-text">Department: <b>{{resource.department}}</b></p>
+                                        <div class="d-flex m-0">
+                                            <a href="{% url "download_reference_material" resource.id %}" class="btn btn-sm btn-primary ms-auto"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="left"
+                                                    title="Download {{resource.filename}}"
+                                            >
+                                                <span class="bi-download"></span>
+                                                
+                                                
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="card-footer">
+                                    <div class="card-footer m-0">
                                         <div class="d-flex">
-                                            <p class="card-text ms-auto"><small class="text-muted">Created on: {{resource.created|date}}</small></p>
-                                            <div class="card-text ms-sm-2">Uploaded by: {{resource.author}}</div>
+                                            <p class="card-text ms-auto"><small class="text-muted font-size-sm">Created on: {{resource.created|date}}</small></p>
+                                            <div class="card-text ms-sm-2 font-size-sm">Uploaded by: {{resource.author}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,78 +123,14 @@
                         <h4 class="card-title">Room Chat</h4>
                         {% if get_messages %}
                             {% for message in get_messages %}
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card ">
-                                            {% if message.user.account_type == "Lecturer" %}
-                                            <div class="card-body bg-danger text-light rounded-3"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="left"
-                                                title="Lecturer">
-                                                    <div class="message-container d-flex">
-                                                        <a href="{% url 'user_profile' message.user %}" class="badge bg-light text-dark mt-md-3">@{{message.user}}</a>
-                                                        <div class="dropdown open ms-auto">
-                                                            <a
-                                                                class="dropdown-toggle btn-sm"
-                                                                type="button"
-                                                                id="triggerId"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                            
-                                                            </a>
-                                                            <div class="dropdown-menu" aria-labelledby="triggerId">
-                                                                {% if message.user == request.user  or message.user == message.room.host.user %}
-                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Delete</a>
-                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Edit</a>
-                                                                {% else %}
-                                                                <a class="dropdown-item" href="#">Unauthorised</a>
-                                                                {% endif %}
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <p class="card-text">{{message.body}}</p>
-                                            </div>
-                                            {% elif message.user.account_type == "Student" %}
-                                            <div class="card-body text-light rounded-3"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="left"
-                                                title="Student">
-                                                <!--Drop Down Anchor-->
-                                                <div class="message-container d-flex">
-                                                    <a href="{% url 'user_profile' message.user %}" class="badge bg-light text-dark mt-md-3">@{{message.user}}</a>
-                                                    <div class="dropdown open ms-auto">
-                                                        <a
-                                                            class="dropdown-toggle btn-sm"
-                                                            type="button"
-                                                            id="triggerId"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                           
-                                                        </a>
-                                                        <div class="dropdown-menu" aria-labelledby="triggerId">
-                                                            {% if message.user == request.user or message.user == message.room.host.user%}
-                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Delete</a>
-                                                                <a class="dropdown-item" href="{% url "delete_message" message.message_code %}">Edit</a>
-                                                            {% else %}
-                                                                <a class="dropdown-item" href="#">Unauthorised</a>
-                                                            {% endif %}
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                                <p class="card-text text-dark">{{message.body}}</p>
-                                            </div>
-                                            {% else %}
-                                            <p>Invalid User</p>
-                                            {% endif %}
-                                            
-                                        </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title font-size-sm"><a href="#">@{{message.user}}</a></h6>
+                                        <p class="card-text">{{message}}</p>
+                                        <p class="card-text text-muted font-size-sm">{{message.created|timesince}}</p>
                                     </div>
                                 </div>
+                                
                             {% endfor %}
                         {% else %}
                         
