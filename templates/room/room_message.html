@@ -1,183 +1,134 @@
-{% extends "base/base.html" %}
+{% extends "base/base.html" %} 
 
-{% load widget_tweaks %}
-{% load static %}
+{% load widget_tweaks %} 
+{% load static %} 
 
-{% block title %}Room Messages{% endblock  %}
+{%block title %}Room Messages{% endblock %}
 
 {% block content %}
     {% include "base/header.html" %}
     {% include "base/sidebar.html" %}
 
-    <main id="main" class="main">
-
-        <div class="pagetitle">
-          <h1>Room Messages</h1>
-          <nav>
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-                <li class="breadcrumb-item active">Room Messages</li>
-                </ol>
-          </nav>
-        </div><!-- End Page Title -->
-
-        {% include "base/alert.html" %}
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    {% if room.room_avatar %}
-                        <img src="{{room.room_avatar.url}}" class="img-rounded-circle" alt="">
-                    {% else %}
-                        <img src="" class="img-rounded-circle" alt="No profile Found">
-                    {% endif %}                    
-                    <div class="card-body">
-                        <h4 class="card-title">Room Name: {{room.course_code|truncatechars:5}}</h4>
-                        <p class="card-text text-primary">Room Description: <span class="text-dark">{{room.description|truncatechars:20}}</span></p>
-                        <small class="card-text">Created By: <span class="badge bg-primary">{{room.host}}</span></small>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex">
-                            <p class="card-text ms-auto"><small class="text-muted">{{room.created|date}}</small></p>
-                        </div>
-                    </div>
+<main id="main">
+        <div class="row clearfix">
+          <div class="col-lg-12">
+            <div class="card chat-app">
+              <div id="plist" class="people-list">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Search..." />
                 </div>
-                <div class="card message-card">
-                    <div class="card-body">
-                        <h4 class="card-title">People/Participants</h4>
-                        {% if participants %}
-                            {% for user in participants %}
-                                
-                                <p class="card-text fw-bolder">
-                                    {{user.username}}
-                                </p>
-                            {% endfor %}
-                        {% else %}
-                        <div
-                            class="alert alert-primary"
-                            role="alert"
-                        >
-                            <strong>No Participant{{participants|pluralize}}</strong> Found
-                        </div>
-                    
-                        
-                        {% endif %}
-                    </div>
-                    
-                </div>
-
-                <!-- Resources Available-->
-                <div class="card message-card">
-                    <div class="card-body">
-                        <h4 class="card-title">Resources Available</h4>
-                        {% if resources %}
-                            {% for resource in resources %}
-                                
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Filename: <span class="badge bg-primary text-light">{{resource.filename}}</span></h4>
-                                        <p class="card-text">Department: <b>{{resource.department}}</b></p>
-                                        <div class="d-flex m-0">
-                                            <a href="{% url "download_reference_material" resource.id %}" class="btn btn-sm btn-primary ms-auto"
-                                                    data-bs-toggle="tooltip"
-                                                    data-bs-placement="left"
-                                                    title="Download {{resource.filename}}"
-                                            >
-                                                <span class="bi-download"></span>
-                                                
-                                                
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer m-0">
-                                        <div class="d-flex">
-                                            <p class="card-text ms-auto"><small class="text-muted font-size-sm">Created on: {{resource.created|date}}</small></p>
-                                            <div class="card-text ms-sm-2 font-size-sm">Uploaded by: {{resource.author}}</div>
-                                        </div>
-                                    </div>
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                    <small class="mb-0 fw-bold">Participants</small>
+                    <hr>
+                    {% if participants %}
+                        {% for user in participants %}
+                            <li class="clearfix">
+                            <img
+                                src="{{ user.profile.avatar.url }}"
+                                alt="avatar"
+                            />
+                            <div class="about">
+                                <div class="name">{{ user.profile.full_name }}</div>
+                                <div class="status">
+                                <i class="bx bx-circle offline"></i> left 7 mins ago
                                 </div>
-                                
-                            {% endfor %}
-                        {% else %}
-                        <div
-                            class="alert alert-primary"
-                            role="alert"
-                        >
-                            <strong>No </strong>Resource{{resources|pluralize}} Found
-                        </div>
-
-                            {% if request.user == room.host or request.user.is_staff  %}
-                                <a href="{% url 'update_room' room.room_code %}" class="btn btn-primary">Add Resources</a>
-                            {% endif %}
-                    
-                        
-                        {% endif %}
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="col-md-8">
-                <div class="card message-card">
-                    <div class="card-body">
-                        <h4 class="card-title">Room Chat</h4>
-                        {% if get_messages %}
-                            {% for message in get_messages %}
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title font-size-sm"><a href="#">@{{message.user}}</a></h6>
-                                        <p class="card-text">{{message}}</p>
-                                        <p class="card-text text-muted font-size-sm">{{message.created|timesince}}</p>
-                                    </div>
-                                </div>
-                                
-                            {% endfor %}
-                        {% else %}
-                        
-                        <div
-                            class="alert alert-primary alert-dismissible fade show"
-                            role="alert"
-                        >
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                            <strong>No message found</strong> for this classroom
-                        </div>
-                        
-                        <script>
-                            var alertList = document.querySelectorAll(".alert");
-                            alertList.forEach(function (alert) {
-                                new bootstrap.Alert(alert);
-                            });
-                        </script>
-                        
-                    
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="card mb-md-5">
-                    <div class="card-body">
-                        <form action="" class="mt-4" method="POST">
-                            {% csrf_token %}
-                            <div class="input-group has-validation">
-                                <div class="form-floating">
-                                  {% render_field message_form.body rows="2" cols="2" class="form-control message-inp" name='message' id="floatingInput"  placeholder="Message.." %}
-                                  <label for="floatingInput">Message..</label>
-                                </div>
-                                <button class="btn btn-primary btn-sm message-btn" type="submit">Send</button>
                             </div>
-
-                        </form>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+              </div>
+              <div class="chat">
+                <div class="chat-header clearfix">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <a
+                        href="#"
+                        
+                      >
+                        <img
+                          src="{{room.room_avatar.url}}"
+                          alt="avatar"
+                          data-bs-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Room name {{room.course_code|truncatechars:4}}"
+                        />
+                      </a>
+                      <div class="chat-about">
+                        <h6 class="m-b-0">{{room.course_code|upper|truncatechars:4}}</h6>
+                        <small>{{room.created}}</small>
+                      </div>
                     </div>
+                    <div class="col-lg-6 hidden-sm text-right">
+                      <a href="javascript:void(0);" class="btn btn-outline-secondary"
+                        ><i class="bx bx-camera"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-primary"
+                        ><i class="bx bx-image"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-info"
+                        ><i class="ri ri-chat-settings-line"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-warning"
+                        ><i class="ri ri-question-line"></i
+                      ></a>
+                    </div>
+                  </div>
                 </div>
-                
-                
+                <div class="chat-history">
+                    <ul class="m-b-0">
+                        
+                        {% for message in get_all_messages reversed %}
+                          {% if message.user == request.user %}
+                            <li class="clearfix">
+                                <div class="message-data d-flex">
+                                    <span class="message-data-name ms-auto me-2"><b>Me</b></span>
+                                </div>
+                              <div class="message other-message float-right">
+                                {{ message.body }}
+                              </div>
+                            </li>
+                          {% else %}
+                            <li class="clearfix">
+                              <div class="message-data">
+                                <img src="{{ message.user.profile.avatar.url }}" class="message-data-time" alt="avatar">
+                                <span class="message-data-name">{{ message.user.username }}</span>
+                              </div>
+                              <div class="message my-message">{{ message.body }}</div>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                          
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="body"
+                            placeholder="Enter text here..."
+                          />
+                          <div class="input-group-prepend">
+                              <button class="input-group-text"><i class="ri ri-send-plane-line"></i></button>
+                            </div>
+                        </div>
+                      </div>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
 
-{% endblock  %}
+      {% include "base/resource_slider.html" %}
+    </main>
+
+{% endblock %}
 
 

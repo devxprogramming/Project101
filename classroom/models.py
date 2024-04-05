@@ -14,6 +14,11 @@ def resources_file_path(instance, filename):
     filename = f"{instance.filename}.{file_ext}"
     return f"resources/{filename}"
 
+def resources_image_path(instance, filename):
+    file_ext = filename.split(".")[-1]
+    filename = f"{instance.filename}.{file_ext}"
+    return f"resources/image/{filename}"
+
 PRIVACY = (
     ('Public', 'Public'),
     ('Private', 'Private'),
@@ -63,6 +68,7 @@ class Message(models.Model):
 class Resource(models.Model):
     file_code = models.UUIDField(default=uuid4, unique=True, editable=False)
     filename = models.CharField(max_length=999999, unique=True)
+    image = models.FileField(upload_to=resources_image_path, null=True, blank=True)
     upload = models.FileField(upload_to=resources_file_path, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)

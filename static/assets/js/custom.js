@@ -52,3 +52,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+// Resource Slider JS
+

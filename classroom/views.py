@@ -129,10 +129,12 @@ def show_all_rooms(request):
 @login_required(login_url='login')
 def room_message(request, pk):
     room = get_object_or_404(Room, room_code=pk)
-    get_messages = Message.objects.filter(room=room)
+    get_other_messages = Message.objects.filter(room=room).exclude(user=request.user).order_by('-created')
     participants = room.participants.all()
+    get_all_messages = Message.objects.filter(room=room).order_by('-created')
     resources = room.resources.all()
     message_form = MessageForm()
+    current_user_messages = Message.objects.filter(user=request.user, room=room).order_by('-created')
     if request.method == "POST":
         room_messages = Message.objects.create(
             user = request.user,
@@ -145,9 +147,11 @@ def room_message(request, pk):
     context = {
         'room':room,
         'message_form':message_form,
-        'get_messages':get_messages,
+        'get_other_messages':get_other_messages,
         "participants":participants,
         "resources":resources,
+        "current_user_messages":current_user_messages,
+        "get_all_messages":get_all_messages,
     }
     return render(request, 'room/room_message.html', context)
 
