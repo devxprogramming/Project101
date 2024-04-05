@@ -177,11 +177,11 @@
 }
 
 .chat .chat-history .message {
-    color: #444;
-    padding: 18px 20px;
+    color: #0a0a0ae1;
+    padding: 10px 18px;
     line-height: 26px;
     font-size: 16px;
-    border-radius: 7px;
+    border-radius: 10px;
     display: inline-block;
     position: relative
 }
@@ -225,7 +225,7 @@
 
 .chat .chat-history .other-message:after {
     border-bottom-color: #e8f1f3;
-    left: 80%
+    left: 89%
 }
 
 .chat .chat-message {

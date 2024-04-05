@@ -59,7 +59,7 @@
                       </a>
                       <div class="chat-about">
                         <h6 class="m-b-0">{{room.course_code|upper|truncatechars:4}}</h6>
-                        <small>{{room.created}}</small>
+                        <small class="fw-bold">Created on :{{room.created}}</small>
                       </div>
                     </div>
                     <div class="col-lg-6 hidden-sm text-right">
@@ -87,7 +87,7 @@
                                 <div class="message-data d-flex">
                                     <span class="message-data-name ms-auto me-2"><b>Me</b></span>
                                 </div>
-                              <div class="message other-message float-right">
+                              <div class="message my-message float-right">
                                 {{ message.body }}
                               </div>
                             </li>
@@ -97,7 +97,7 @@
                                 <img src="{{ message.user.profile.avatar.url }}" class="message-data-time" alt="avatar">
                                 <span class="message-data-name">{{ message.user.username }}</span>
                               </div>
-                              <div class="message my-message">{{ message.body }}</div>
+                              <div class="message  other-message">{{ message.body }}</div>
                             </li>
                           {% endif %}
                         {% endfor %}
