@@ -94,7 +94,7 @@ def logout_view(request):
 
 
 def user_profile(request, pk):
-    profile = Profile.objects.get(school_id=pk)
+    profile = User.objects.get(school_id=pk)
     user = User.objects.all()
     
     context = {

@@ -41,7 +41,7 @@
                     {% endif %}
                 </ul>
               </div>
-              <div class="chat">
+              <div class="chat message-card">
                 <div class="chat-header clearfix">
                   <div class="row">
                     <div class="col-lg-6">
@@ -103,24 +103,25 @@
                         {% endfor %}
                       </ul>
                 </div>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div class="chat-message clearfix">
-                        <div class="input-group mb-0">
-                          
-                          <input
-                            type="text"
-                            class="form-control"
-                            name="body"
-                            placeholder="Enter text here..."
-                          />
-                          <div class="input-group-prepend">
-                              <button class="input-group-text"><i class="ri ri-send-plane-line"></i></button>
-                            </div>
-                        </div>
-                      </div>
-                </form>
               </div>
+              <form action="" method="post">
+                  {% csrf_token %}
+                  <div class="chat-message  clearfix">
+                      <div class="input-group mb-0">
+                        
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="body"
+                          placeholder="Enter text here..."
+                          required
+                        />
+                        <div class="input-group-prepend">
+                            <button class="input-group-text"><i class="ri ri-send-plane-line"></i></button>
+                          </div>
+                      </div>
+                    </div>
+              </form>
             </div>
           </div>
         </div>

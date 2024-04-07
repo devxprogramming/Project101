@@ -38,11 +38,14 @@
 .form-control:focus {
     border-color: #007bff;
     box-shadow: none;
+    font-style: italic;
 }
 
 .message-card{
-    max-height: 50vh !important;
+    max-height: 80dvh;
     overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     
 }
 

@@ -77,3 +77,18 @@ class Resource(models.Model):
     
     def __str__(self):
         return f"{self.filename}"
+    
+
+class StudyAi(models.Model):
+    ai_uuid = models.UUIDField(default=uuid4, unique=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    prompt = models.TextField()
+    response = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = 'StudyAI'
+        
+    def __str__(self):
+        return str(self.ai_uuid)

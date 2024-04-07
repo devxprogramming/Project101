@@ -1,7 +1,8 @@
 import mimetypes
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from classroom.forms import RoomForm, MessageForm, ResourceForm
-from classroom.models import Room, Message, Resource
+from classroom.models import Room, Message, Resource, StudyAi
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -9,6 +10,20 @@ from django.views.static import serve
 import os
 from django.http import FileResponse, Http404, HttpResponse
 from core.settings import BASE_DIR
+from IPython.display import Markdown
+import textwrap
+from IPython.display import display
+import pathlib
+from django.utils.safestring import mark_safe
+
+
+# Ai imports
+import dotenv
+import google.generativeai as genai
+
+# load env file
+dotenv.load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 @login_required(login_url='login')
 def create_room(request):
@@ -206,3 +221,63 @@ def download_reference_material(request, pk):
     response = FileResponse(open(file_path, 'rb'))
     response['Content-Disposition'] = f'attachment; filename="{file_name}"'
     return response
+
+
+
+
+@login_required(login_url='login')
+def use_ai(request):
+    if request.method == "POST":
+        userInput = request.POST.get('user-input')
+        genai.configure(api_key=API_KEY)
+        model = genai.GenerativeModel('gemini-pro')
+
+        response = model.generate_content(userInput)
+
+        # Extract the generated text from the response object
+        generated_text = response.text
+
+        # Replace bullet points with Markdown formatted lists
+        generated_text = generated_text.replace('•', '*')
+
+        # Make any next line go on a next line
+        generated_text = generated_text.replace('**', '  ')
+
+
+
+        # Pass the generated text to the to_markdown function
+        output = generated_text
+        
+        # Saving the generated text to a file
+        #  if file exist, add the next generated text, else create a new file with the generated text
+        file_path = os.path.join(BASE_DIR, 'studdyai/generated_text.txt')
+        if os.path.exists(file_path):
+            with open(file_path, 'a') as f:
+                f.write(f'\n\n{generated_text}')
+        else:
+            with open(file_path, 'w') as f:
+                f.write(generated_text)
+                
+        # Saving to Database
+        StudyAi.objects.create(
+            user = request.user,
+            prompt = userInput,
+            response = output,
+        ).save()
+        
+        your_history = StudyAi.objects.filter(user=request.user).order_by('-created')
+        
+        
+
+        context={
+            'response': output,
+            "history":your_history,
+        }
+        return render(request, 'room/use_ai.html', context)
+    else:
+        your_history = StudyAi.objects.filter(user=request.user).order_by('-created')
+        context={
+            "history":your_history,
+        }
+        # Handle GET request
+        return render(request, 'room/use_ai.html', context)
