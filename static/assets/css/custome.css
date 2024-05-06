@@ -42,11 +42,12 @@
 }
 
 .message-card{
-    max-height: 80dvh;
+    max-height: 50dvh;
     overflow: scroll;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    
+}
+
+.message-card::-webkit-scrollbar{
+    display: none;
 }
 
 .message-btn{
@@ -315,4 +316,12 @@
 }
 
 
+.response__card{
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.response__card::-webkit-scrollbar {
+    display: none;
+}
 

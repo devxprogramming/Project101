@@ -25,8 +25,8 @@ def login_view(request):
             else:
                 messages.info(request, 'Invalid username or password')
                 return redirect('login')
-        except:
-            messages.error(request, 'Invalid username or password')
+        except User.DoesNotExist:
+            messages.info(request, 'Invalid username or password')
             return redirect('login')
         
             

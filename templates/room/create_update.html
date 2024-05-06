@@ -48,30 +48,30 @@
                                                 {% csrf_token %}
                                                 <div class="col-md-6">
                                                     {% render_field form.course_title class="form-control" placeholder="Courser Title" %}
-                                                  </div>
-                                                  <div class="col-md-6">
-                                                    {% render_field form.course_code class="form-control" placeholder="Course Code" %}
-                                                  </div>
-                                                  <div class="col-md-12">
+                                                </div>
+                                                <div class="col-md-6">
+                                                {% render_field form.course_code class="form-control" placeholder="Course Code" %}
+                                                </div>
+                                                <div class="col-md-12">
                                                     <div class="input-group">
-                                                      {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
-                                                      <div class="input-group-append">
-                                                        <span class="input-group-text" id="togglePassword">
-                                                              <i class="bi bi-eye" aria-hidden="true"></i>
-                                                        </span>
-                                                      </div>
-                                                  </div> 
-                                                  </div>
+                                                        {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="togglePassword">
+                                                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div> 
+                                                </div>
                                                   <div class="col-12">
                                                     {% render_field form.description class="form-control" rows="1" cols="1" placeholder="Room Description" %}
                                                   </div>
-                                                  <div class="col-md-12">
+                                                  <div class="col-md-6">
                                                     <label for="participants"> Participants </label>
                                                     {% render_field form.participants multiple="multiple" class="form-select" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
                                                   </div>
-                                                  <div class="col-md-12">
-                                                    <label for="resources">Resources</label>
-                                                    {% render_field form.resources class="form-select" multiple="multiple" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
+                                                  <div class="col-md-6">
+                                                      <label for="resources">Resources</label>
+                                                      {% render_field form.resources  class="form-select" multiple="multiple" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
                                                   </div>
                                                   <div class="col-md-6">
                                                     {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}
