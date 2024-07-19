@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+
+
+{% block title %}Search Page{% endblock  %}
+
+
+{% block content %}
+    {% include "base/header.html" %}
+
+    {% include "base/sidebar.html" %}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Search Page</h1>
+          <nav>
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item active">Search Page</li>
+                </ol>
+          </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+          <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <span class="badge bg-secondary text-light">{{rooms.count}}</span> Search Result{{rooms|pluralize}} for <b>"{{query}}"</b>
+                            </h5>
+                            {% if rooms %}
+                            <div class="row">
+                                    {% for room in rooms %}
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                {% if room.room_avatar %}
+                                                    <img src="{{room.room_avatar.url}}" class="img-rounded-circle" alt="">
+                                                {% else %}
+                                                    <img src="" class="img-rounded-circle" alt="No profile Found">
+                                                {% endif %}
+                                                <h5 class="card-title">
+                                                    <small class="text-primary fw-bold">Room Title:</small>
+                                                    {{room.course_title}}
+                                                </h5>
+                                                <p class="card-text">
+                                                    <span class="text-primary fw-bold">Room Description:</span>
+                                                    {{room.description}}
+                                                </p>
+                                                <a href="{% url "room_message" room.room_code %}" class="btn btn-primary">Enter  Room</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                            No result found for "{{query}}"
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+                
+          </div>
+        </section>
+
+        
+    </main>
+
+
+{% endblock  %}

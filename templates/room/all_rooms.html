@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}All Rooms{% endblock  %}
+
+
+{% block content %}
+
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+    <main class="main" id="main">
+        <div class="pagetitle">
+            <h1>All Rooms Page</h1>
+            <nav>
+                  <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                  <li class="breadcrumb-item active">All Room{{rooms|pluralize}} Page</li>
+                  </ol>
+            </nav>
+          </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <span class="badge bg-secondary text-light">{{room_count}}</span> room{{rooms|pluralize}} available 
+                                <div class="d-flex">
+                                    {% if request.user.is_staff %}
+                                        {% if rooms %}
+                                            <a href="{% url 'delete_all_rooms' %}" class="ms-auto btn btn-danger btn-sm">Delete All Rooms</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% include "base/alert.html" %}
+                                {% if rooms %}
+                                <div class="row">
+                                    {% for room in rooms %}
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                {% if room.room_avatar %}
+                                                    <img src="{{room.room_avatar.url}}" class="img-rounded-circle" alt="">
+                                                {% else %}
+                                                    <img src="" class="img-rounded-circle" alt="No profile Found">
+                                                {% endif %}
+                    
+                                                <h3 class="card-title">Course Code:
+                                                    <span class="badge bg-primary text-light">{{room.course_code|truncatechars:7}}</span>
+                                                </h3>
+                                                <p class="card-text">
+                                                    <span class="text-primary">Course Title:</span>
+                                                    <b>{{room.course_title}}</b>
+                                                </p>
+                                                <p class="card-text">
+                                                    <span class="text-primary">Course Description:</span>
+                                                    {{room.description|truncatechars:20}}
+                                                </p>
+                                                <small class="text-muted">Room ID: {{room.room_code}}</small>
+                                            </div>
+                                            <div class="card-footer d-flex">
+                                                {% if request.user == room.host %}
+                                                <a href="{% url "delete_room" room.room_code %}" class="ms-auto btn-sm btn btn-danger"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="bottom"
+                                                    title="Delete Room Instance"
+                                                    >Delete</a>
+                                                    {% if room.room_privacy == "Public" %}
+                                                        <a href="{% url "update_room" room.room_code %}" class="ms-md-2 btn-sm btn btn-warning"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="bottom"
+                                                        title="Delete Room Instance"
+                                                        >Update</a>
+                                                    {% elif room.room_privacy == "Private" %}
+                                                        <a href="{% url "private_room" room.room_code %}" class="ms-md-2 btn-sm btn btn-warning"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="bottom"
+                                                        title="Update Room Details"
+                                                        >Update</a>
+                                                    {% endif %}
+                                                    
+                                                    {% endif %}
+                                                    <a href="{% url "room_message" room.room_code %}" class="ms-auto btn-sm btn btn-success"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="bottom"
+                                                            title="Join Room Chat"
+                                                            >Join chat
+                                                    </a>
+                                                </div>
+                                            
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    <h1 class="text-center mt-md-5">No rooms Available</h1>
+                                    <div class="d-flex justify-content-center">
+                                        <a href="{% url "create_room" %}" class="btn btn-success w-25 ">Create Room</a>
+                                    </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>                 
+        </section>
+    </main>
+            {% endif %}
+            
+            {% if rooms %}
+            <nav class="d-flex" aria-label="Page navigation">
+                <ul
+                    class="pagination   ms-auto me-auto "
+                >
+                    {% if rooms.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ rooms.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="?page=1">1</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ rooms.paginator.num_pages }}">Last</a>
+                    </li>
+                    {% if rooms.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ rooms.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+    
+
+{% endblock %}

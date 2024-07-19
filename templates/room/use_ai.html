@@ -1,0 +1,86 @@
+{% extends "base/base.html" %}
+
+{% block title %}Studdy AI{% endblock  %}
+
+
+{% block content %}
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+    <main class="main" id="main">
+        <div class="pagetitle">
+            <h1>Studdy AI</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Chat</h3>
+                        <div class="card-text">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="user-input" class="form-control"  placeholder="Enter your Prompt...">
+                                <button type="submit" class="btn btn-primary mt-2 w-100" >Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body response__card">
+                        <h3 class="card-title">Response</h3>
+                        {% if response %}
+                            <p class="card-text">{{response|safe}}</p>
+                        {% else %}
+                            <div
+                                class="alert alert-danger alert-dismissible fade show"
+                                role="alert"
+                            >
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            
+                                Please Enter something in the Prompt Box
+                            </div>
+                            
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card message-card">
+                    <div class="card-body">
+                        <h4 class="card-title">Recents</h4>
+                        
+                        <div class="row">
+                            {% for something in history %}
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h3 class="card-title">{{something.id}}. {{something.prompt}}</h3>
+                                            <p class="card-text">{{something.response|truncatewords:10}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                            
+
+                    </div>
+                </div>
+            </div> 
+        </div>
+        
+        
+
+    </main>
+{% endblock  %}

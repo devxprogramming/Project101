@@ -1,0 +1,135 @@
+{% extends "base/base.html" %} 
+
+{% load widget_tweaks %} 
+{% load static %} 
+
+{%block title %}Room Messages{% endblock %}
+
+{% block content %}
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+<main id="main">
+        <div class="row clearfix">
+          <div class="col-lg-12">
+            <div class="card chat-app">
+              <div id="plist" class="people-list">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Search..." />
+                </div>
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                    <small class="mb-0 fw-bold">Participants</small>
+                    <hr>
+                    {% if participants %}
+                        {% for user in participants %}
+                            <li class="clearfix">
+                            <img
+                                src="{{ user.profile.avatar.url }}"
+                                alt="avatar"
+                            />
+                            <div class="about">
+                                <div class="name">{{ user.profile.full_name }}</div>
+                                <div class="status">
+                                <i class="bx bx-circle offline"></i> left 7 mins ago
+                                </div>
+                            </div>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+              </div>
+              <div class="chat message-card">
+                <div class="chat-header clearfix">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <a
+                        href="#"
+                        
+                      >
+                        <img
+                          src="{{room.room_avatar.url}}"
+                          alt="avatar"
+                          data-bs-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Room name {{room.course_code|truncatechars:4}}"
+                        />
+                      </a>
+                      <div class="chat-about">
+                        <h6 class="m-b-0">{{room.course_code|upper|truncatechars:4}}</h6>
+                        <small class="fw-bold">Created on :{{room.created}}</small>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 hidden-sm text-right">
+                      <a href="javascript:void(0);" class="btn btn-outline-secondary"
+                        ><i class="bx bx-camera"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-primary"
+                        ><i class="bx bx-image"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-info"
+                        ><i class="ri ri-chat-settings-line"></i
+                      ></a>
+                      <a href="javascript:void(0);" class="btn btn-outline-warning"
+                        ><i class="ri ri-question-line"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-history">
+                    <ul class="m-b-0">
+                        
+                        {% for message in get_all_messages reversed %}
+                          {% if message.user == request.user %}
+                            <li class="clearfix">
+                                <div class="message-data d-flex">
+                                    <span class="message-data-name ms-auto me-2"><b>Me</b></span>
+                                </div>
+                              <div class="message my-message float-right">
+                                {{ message.body }}
+                              </div>
+                            </li>
+                          {% else %}
+                            <li class="clearfix">
+                              <div class="message-data">
+                                <img src="{{ message.user.profile.avatar.url }}" class="message-data-time" alt="avatar">
+                                <span class="message-data-name">{{ message.user.username }}</span>
+                              </div>
+                              <div class="message  other-message">{{ message.body }}</div>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                </div>
+              </div>
+              <form action="" method="post">
+                  {% csrf_token %}
+                  <div class="chat-message  clearfix">
+                      <div class="input-group mb-0">
+                        
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="body"
+                          placeholder="Enter text here..."
+                          required
+                        />
+                        <div class="input-group-prepend">
+                            <button class="input-group-text"><i class="ri ri-send-plane-line"></i></button>
+                          </div>
+                      </div>
+                    </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include "base/resource_slider.html" %}
+    </main>
+
+{% endblock %}
+
+

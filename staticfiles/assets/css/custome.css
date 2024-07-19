@@ -1,0 +1,50 @@
+/* .room-container
+{
+    left: 10%;
+    right: 20%;
+    position: absolute;
+    transform: translate(20%, 30%);
+} */
+
+.img-rounded-circle {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    border-radius: 50%; /* Make the border round to create a circle */
+    object-fit: cover; /* Ensure the image fills the container without stretching */
+    position: absolute; /* Position the image absolutely within its container */
+    top: 0; /* Position the image at the top */
+    right: 0; /* Position the image at the right */
+    /* z-index: 999; Ensure the image is above other content */
+    margin: 10px 10px 0px 0px;
+    transition: 0.3s ease;
+}
+
+.img-rounded-circle:is(:hover) {
+    transform: rotate(45deg); /* Scale and extrude the image on hover */
+    box-shadow: 10px 8px 10px rgba(0, 0, 0, 0.178) /* Add some shadow to the image */;
+}
+
+.img-rounded-circle-home{
+    transition: 0.3s ease;
+}
+
+.img-rounded-circle-home:is(:hover) {
+    transform: rotate(45deg); /* Scale and extrude the image on hover */
+    box-shadow: 10px 8px 10px rgba(0, 0, 0, 0.575) /* Add some shadow to the image */;
+}
+
+
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.message-card{
+    max-height: 50vh !important;
+    overflow: scroll;
+}
+
+.message-btn{
+    position: static !important;
+}

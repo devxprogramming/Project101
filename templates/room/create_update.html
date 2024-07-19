@@ -1,0 +1,182 @@
+{% extends "base/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+    {% if page == 'create_room' %}
+        Create Room
+    {% elif page == 'update_room' %}
+        Update Room
+    {% else %}
+        Invalid Page
+    {% endif %}
+{% endblock  %}
+
+
+
+
+{% block content %}
+    {% include "base/header.html" %}
+
+    {% include "base/sidebar.html" %}
+
+
+    {% if page == 'create_room' %}
+
+            {% csrf_token %}
+            <main>
+                <div class="container">
+                    
+                    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                        <div class="container">
+                            
+                            
+                            <div class="row justify-content-center">
+                                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    
+                                    <div class="d-flex justify-content-center py-4">
+                                        <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                        <img src="assets/img/logo.png" alt="">
+                                        <span class="d-none d-lg-block">Create Room</span>
+                                        </a>
+                                    </div><!-- End Logo -->
+                                    {% include "base/alert.html" %}
+                                    <div class="card mb-3">
+                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">Create a classroom for Students to join</h5>
+                                            <form method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                                                {% csrf_token %}
+                                                <div class="col-md-6">
+                                                    {% render_field form.course_title class="form-control" placeholder="Courser Title" %}
+                                                </div>
+                                                <div class="col-md-6">
+                                                {% render_field form.course_code class="form-control" placeholder="Course Code" %}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="togglePassword">
+                                                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                                  <div class="col-12">
+                                                    {% render_field form.description class="form-control" rows="1" cols="1" placeholder="Room Description" %}
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <label for="participants"> Participants </label>
+                                                    {% render_field form.participants multiple="multiple" class="form-select" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <label for="resources">Resources</label>
+                                                      {% render_field form.resources  class="form-select" multiple="multiple" data-bs-placement="right" data-bs-toggle="tooltip" title="Hold Ctrl to multi-select" %}
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                    <input type="text" class="form-control bg-danger-subtle" disabled name="host" id="host" value="{{request.user}}" readonly>
+                                                  </div>
+                                                  <div class="col-md-12">
+                                                    {% render_field form.room_avatar class="form-control"%}
+                                                  </div>
+                                                  <div class="text-center">
+                                                    <button type="submit" class="btn btn-primary w-100">Creat Now</button>
+                                                  </div>           
+                                            </form>
+                        
+                                        </div>
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </section>
+                    
+                </div>
+            </main>
+
+
+    {% elif page == 'update_room' %}
+
+    <main>
+        <div class="container">
+            
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+            
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                <img src="assets/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">Update Room</span>
+                                </a>
+                            </div><!-- End Logo -->
+
+                            {% include "base/alert.html" %}
+                            
+                            <div class="card mb-3">
+                
+                                <div class="card-body">
+                                    <h5 class="card-title">Update a Room</h5>
+                                    <form method="POST" class="row g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="col-md-12">
+                                            {% render_field form.course_title class="form-control" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {% render_field form.course_code class="form-control" placeholder="Course Code" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {% render_field  form.room_password type='password' class="form-control" placeholder="Room Password" %}
+                                        </div>
+                                        <div class="col-md-12">
+                                            {% render_field form.description class="form-control" rows="2" cols="2" placeholder="Room Description" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="id_participants" class="form-label">Participants</label>
+                                            {% render_field form.participants class="form-control" rows="2" cols="2" placeholder="Participants" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="id_resources" class="form-label">Resources</label>
+                                            {% render_field form.resources class="form-control" rows="2" cols="2" placeholder="Room Resource" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {% render_field form.room_privacy class="form-select" placeholder="Room Privacy" %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control bg-danger-subtle" disabled name="host" id="host" value="{{request.user}}" readonly>
+                                        </div>
+                                        <div class="col-md-12">
+                                            {% render_field form.room_avatar class="form-control"%}
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary w-100">Creat Now</button>
+                                        </div>        
+                                    </form>
+                
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+            
+        </div>
+    </main>
+
+    {% else %}
+
+        Invalid Page
+    
+    {% endif %}
+
+{% endblock  %}

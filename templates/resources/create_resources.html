@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Create Resources{% endblock  %}
+
+
+{% block content %}
+
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+    <main>
+        <div class="container">
+            
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+            
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                <img src="assets/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">Create Resource</span>
+                                </a>
+                            </div><!-- End Logo -->
+                            {% include "base/alert.html" %}
+                            <div class="card mb-3">
+                
+                                <div class="card-body">
+                                    <h5 class="card-title">Create Resource</h5>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <label for="id_filename" class="form-label"> Filename </label>
+                                        {% render_field form.filename class="form-control" placeholder="Enter Filename.." %}
+                                    
+                                        <label for="id_upload" class="form-label"> Upload File </label>
+                                        {% render_field form.upload class="form-control" placeholder="Choose File.." %}
+                                    
+                                        <label for="id_department" class="form-label"> Department </label>
+                                        {% render_field form.department class="form-select"  %}
+                                        
+                                        <button type="submit" class="btn btn-success mt-2 w-100">Submit</button>
+                                    </form>
+                
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+            
+        </div>
+    </main>
+
+{% endblock %}
+
+
+
+

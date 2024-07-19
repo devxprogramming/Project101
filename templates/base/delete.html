@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+
+
+{% block title %}Delete{% endblock  %}
+
+
+{% block content %}
+    {% include "base/header.html" %}
+    {% include "base/sidebar.html" %}
+
+    {% if obj %}
+
+        <main class="main" id="main">
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Do you want to delete 
+                            <b>"{{obj|truncatechars:10}}"</b>?
+                            </h4>
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-danger w-50">Yes</button>
+                                <a onclick="goBack()" class="btn btn-secondary ms-2 w-50">No</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+        </main>
+
+    {% endif %}
+{% endblock  %}

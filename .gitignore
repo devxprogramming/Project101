@@ -1,0 +1,9 @@
+db.sqlite
+
+.vscode
+
+.pytest_cache
+
+.vscode/
+.idea/
+.pytest_cache/
